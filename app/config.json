@@ -5,131 +5,43 @@
   "ScheduleEnabled": false,
   "StartTime": "06:00",
   "StopTime": "22:00",
-  "Days": [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday"
-  ],
+  "Days": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
   "RetrySeconds": 20,
   "FilteringMode": "BlockList",
-  "BlockedDomains": [
-    "example.com"
-  ],
+  "BlockedDomains": ["example.com"],
   "AllowedDomains": [],
   "ExperimentalFiltering": false,
   "DaySchedules": {
-    "Monday": {
-      "Enabled": true,
-      "Start": "06:00",
-      "Stop": "22:00"
-    },
-    "Tuesday": {
-      "Enabled": true,
-      "Start": "06:00",
-      "Stop": "22:00"
-    },
-    "Wednesday": {
-      "Enabled": true,
-      "Start": "06:00",
-      "Stop": "22:00"
-    },
-    "Thursday": {
-      "Enabled": true,
-      "Start": "06:00",
-      "Stop": "22:00"
-    },
-    "Friday": {
-      "Enabled": true,
-      "Start": "06:00",
-      "Stop": "22:00"
-    },
-    "Saturday": {
-      "Enabled": true,
-      "Start": "06:00",
-      "Stop": "22:00"
-    },
-    "Sunday": {
-      "Enabled": true,
-      "Start": "06:00",
-      "Stop": "22:00"
-    }
+    "Monday": {"Enabled": true,"Start": "06:00","Stop": "22:00"},
+    "Tuesday": {"Enabled": true,"Start": "06:00","Stop": "22:00"},
+    "Wednesday": {"Enabled": true,"Start": "06:00","Stop": "22:00"},
+    "Thursday": {"Enabled": true,"Start": "06:00","Stop": "22:00"},
+    "Friday": {"Enabled": true,"Start": "06:00","Stop": "22:00"},
+    "Saturday": {"Enabled": true,"Start": "06:00","Stop": "22:00"},
+    "Sunday": {"Enabled": true,"Start": "06:00","Stop": "22:00"}
   },
   "SpeedControlEnabled": false,
   "HotspotSubnet": "192.168.137.0/24",
-  "SpeedPresets": {
-    "MaxKbps": 5000,
-    "MediumKbps": 1000,
-    "LowKbps": 256
-  },
+  "SpeedPresets": {"MaxKbps": 5000,"MediumKbps": 1000,"LowKbps": 256},
   "SpeedRules": [
-    {
-      "Enabled": false,
-      "Domain": "TikTok",
-      "Level": "Low"
-    },
-    {
-      "Enabled": false,
-      "Domain": "YouTube",
-      "Level": "Medium"
-    }
+    {"Enabled": false,"Domain": "TikTok","Level": "Low"},
+    {"Enabled": false,"Domain": "YouTube","Level": "Medium"}
   ],
   "WebsiteFilteringEnabled": false,
   "BlockedServices": [],
   "RemotePanelEnabled": true,
   "RemotePanelPort": 8787,
   "ScheduleRules": [
-    {
-      "Enabled": true,
-      "Day": "Monday",
-      "Target": "Whole traffic",
-      "Start": "06:00",
-      "Stop": "22:00"
-    },
-    {
-      "Enabled": true,
-      "Day": "Tuesday",
-      "Target": "Whole traffic",
-      "Start": "06:00",
-      "Stop": "22:00"
-    },
-    {
-      "Enabled": true,
-      "Day": "Wednesday",
-      "Target": "Whole traffic",
-      "Start": "06:00",
-      "Stop": "22:00"
-    },
-    {
-      "Enabled": true,
-      "Day": "Thursday",
-      "Target": "Whole traffic",
-      "Start": "06:00",
-      "Stop": "22:00"
-    },
-    {
-      "Enabled": true,
-      "Day": "Friday",
-      "Target": "Whole traffic",
-      "Start": "06:00",
-      "Stop": "22:00"
-    },
-    {
-      "Enabled": true,
-      "Day": "Saturday",
-      "Target": "Whole traffic",
-      "Start": "06:00",
-      "Stop": "22:00"
-    },
-    {
-      "Enabled": true,
-      "Day": "Sunday",
-      "Target": "Whole traffic",
-      "Start": "06:00",
-      "Stop": "22:00"
-    }
+    {"Enabled": true,"Day": "Monday","Target": "Whole traffic","Start": "06:00","Stop": "22:00"},
+    {"Enabled": true,"Day": "Tuesday","Target": "Whole traffic","Start": "06:00","Stop": "22:00"},
+    {"Enabled": true,"Day": "Wednesday","Target": "Whole traffic","Start": "06:00","Stop": "22:00"},
+    {"Enabled": true,"Day": "Thursday","Target": "Whole traffic","Start": "06:00","Stop": "22:00"},
+    {"Enabled": true,"Day": "Friday","Target": "Whole traffic","Start": "06:00","Stop": "22:00"},
+    {"Enabled": true,"Day": "Saturday","Target": "Whole traffic","Start": "06:00","Stop": "22:00"},
+    {"Enabled": true,"Day": "Sunday","Target": "Whole traffic","Start": "06:00","Stop": "22:00"}
+  ],
+  "ProtectedUsersEnabled": true,
+  "ProtectedUsers": [
+    {"Enabled": true,"UserName": "Roshana","SID": "","Policy": "Same as controlled Wi-Fi"}
   ]
 }
