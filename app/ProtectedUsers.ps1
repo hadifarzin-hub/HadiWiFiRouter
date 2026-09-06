@@ -99,15 +99,15 @@ function Apply-ProtectedUserRules {
     foreach($u in $users) {
         $name=[string]$u.UserName
         $sid=Resolve-HadiProtectedUserSid $name ([string]$u.SID)
-        if([string]::IsNullOrWhiteSpace($sid)){$messages += "$name: SID not found";continue}
+        if([string]::IsNullOrWhiteSpace($sid)){$messages += "${name}: SID not found";continue}
         $safe=($name -replace '[^A-Za-z0-9_-]','_')
         if(-not $wholeAllowed) {
-            try { New-HadiProtectedFirewallRule -Name "HadiWiFiRouter - $name - Whole traffic schedule" -Sid $sid -Description 'Blocks all outbound traffic for this protected Windows user outside the configured Whole traffic schedule.'; $messages += "$name: whole Internet blocked by schedule" } catch {$messages += "$name: whole-traffic rule error $($_.Exception.Message)"}
+            try { New-HadiProtectedFirewallRule -Name "HadiWiFiRouter - $name - Whole traffic schedule" -Sid $sid -Description 'Blocks all outbound traffic for this protected Windows user outside the configured Whole traffic schedule.'; $messages += "${name}: whole Internet blocked by schedule" } catch {$messages += "${name}: whole-traffic rule error $($_.Exception.Message)"}
             continue
         }
         if($blockedIps.Count -gt 0) {
-            try { New-HadiProtectedFirewallRule -Name "HadiWiFiRouter - $name - Website/service block" -Sid $sid -RemoteAddress $blockedIps -Description 'Best-effort IP enforcement of HadiWiFiRouter website/service rules for this Windows user.'; $messages += "$name: $($blockedIps.Count) blocked destination IPs applied" } catch {$messages += "$name: block-rule error $($_.Exception.Message)"}
-        } else {$messages += "$name: Internet allowed; no resolved blocked destinations currently"}
+            try { New-HadiProtectedFirewallRule -Name "HadiWiFiRouter - $name - Website/service block" -Sid $sid -RemoteAddress $blockedIps -Description 'Best-effort IP enforcement of HadiWiFiRouter website/service rules for this Windows user.'; $messages += "${name}: $($blockedIps.Count) blocked destination IPs applied" } catch {$messages += "${name}: block-rule error $($_.Exception.Message)"}
+        } else {$messages += "${name}: Internet allowed; no resolved blocked destinations currently"}
         if($strictService) {
             try { New-HadiProtectedFirewallRule -Name "HadiWiFiRouter - $name - QUIC fallback" -Sid $sid -Protocol UDP -RemotePort '443' -Description 'Disables QUIC for the protected Windows user while strict native-service blocking is active.' } catch {}
             try { New-HadiProtectedFirewallRule -Name "HadiWiFiRouter - $name - DoT" -Sid $sid -Protocol TCP -RemotePort '853' -Description 'Blocks DNS-over-TLS for the protected Windows user while strict service filtering is active.' } catch {}
