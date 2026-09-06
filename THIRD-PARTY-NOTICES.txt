@@ -1,0 +1,5 @@
+WinDivert
+Project: https://github.com/basil00/WinDivert
+Version used by Setup-Packet-Engine.cmd: 2.2.2
+The setup script downloads the official prebuilt x64 WinDivert.dll and WinDivert64.sys from the project's GitHub release.
+WinDivert licensing information is provided by the upstream project and distribution (LGPLv3/GPLv2 as documented upstream).

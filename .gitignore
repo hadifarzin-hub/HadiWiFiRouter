@@ -1,0 +1,27 @@
+# Runtime logs
+logs/*
+!logs/.gitkeep
+*.log
+
+# Generated secrets / remote access data
+REMOTE-ACCESS-INFO.txt
+*admin-key*
+*auth-key*
+*.secret
+secrets.json
+
+# Downloaded/generated packet engine binaries
+app/packetengine/*.dll
+app/packetengine/*.sys
+app/packetengine/*.exe
+app/packetengine/*.zip
+
+# Local temp/cache
+*.tmp
+*.bak
+*.old
+Thumbs.db
+Desktop.ini
+
+# Local config overrides that may contain real credentials
+config.local.json
