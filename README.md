@@ -4,9 +4,9 @@ A Windows-based controlled Wi-Fi gateway designed to provide scheduled, filtered
 
 ## Current snapshot
 
-This repository preserves the **v2.2** implementation and the complete product specification developed through iterative testing on the target Windows PC.
+This repository now preserves the **v2.3** implementation and the complete product specification developed through iterative testing on the target Windows PC.
 
-Important: v2.2 successfully creates the controlled Wi-Fi, supports boot-time execution, ordinary custom-domain blocking, service schedules, remote management scaffolding, and packet-engine diagnostics. However, reliable native-app enforcement for TikTok/Instagram/Snapchat remains incomplete when using Windows Mobile Hotspot/ICS. See `MASTER_SPEC_AND_REBUILD_PROMPT.md` for the full history, current limitation, and recommended v3.0 routing redesign.
+Important: v2.3 creates the controlled Wi-Fi, supports boot-time execution, ordinary custom-domain blocking, service schedules, remote management scaffolding, packet-engine diagnostics, and now **Protected Windows Users**. Reliable native-app enforcement for TikTok/Instagram/Snapchat remains incomplete when using Windows Mobile Hotspot/ICS, so the planned v3 routing/WFP redesign is still the long-term architecture.
 
 ## Core product goal
 
@@ -33,19 +33,29 @@ No Windows login should be required after the one-time setup.
 - Service profiles for major social/video services
 - Speed-control interface with Low / Medium / Max levels
 - Connected-device view
+- **Protected Windows Users**: selected Standard local accounts can receive the same schedules/filtering/speed-policy definitions while the Administrator account remains unrestricted
 - Remote management over Tailscale
 - Packet-engine diagnostics and logs
 - One-time `Setup-All.cmd` workflow
 
+## Protected Windows Users
+
+Windows cannot make a local account on this PC connect to the same PC's own hotspot. v2.3 implements the functional equivalent: the PC stays connected to the normal home Wi-Fi, while selected Standard Windows accounts are restricted at the Windows networking layer.
+
+The current v2.3 implementation provides strong per-user enforcement for the **Whole traffic** schedule. Website/service blocking and speed limiting reuse the existing service definitions and apply per-user Firewall/QoS rules, but service-specific native-app enforcement is still best-effort until the v3 user-aware WFP/routing backend.
+
+The included `app/config.json` preselects the local user name `Roshana`; at runtime the software resolves and stores the Windows SID through the Protected Users tab.
+
 ## Important architecture rule
 
-Restrictions must apply only to clients using the controlled Wi-Fi. The Windows PC's own Internet connection must remain unrestricted.
+Restrictions must apply only to controlled hotspot clients and explicitly selected Protected Windows Users. The Administrator account's own Internet connection must remain unrestricted.
 
 ## Repository documentation
 
 Start with:
 
-- `MASTER_SPEC_AND_REBUILD_PROMPT.md` — canonical product/business specification, history, architecture, known issues, and a standalone prompt for rebuilding/continuing the project.
+- `MASTER_SPEC_AND_REBUILD_PROMPT.md` — original canonical product/business specification and v3 direction.
+- `README-v2.3.txt` — the latest Protected Windows Users implementation notes.
 - `README-TEST.txt` — original test instructions/history.
 - version-specific `README-v*.txt` files — incremental implementation notes.
 
@@ -53,7 +63,7 @@ Start with:
 
 Windows Mobile Hotspot/ICS proved adequate for Wi-Fi sharing and basic DNS-based filtering but is not a dependable foundation for precise pre-NAT service identification and throttling of modern native apps using cached CDN addresses, encrypted DNS, QUIC/HTTP3, ECH, and shared infrastructure.
 
-The recommended next step is to retain the existing UI/control plane while replacing the filtering/routing backend with a **real pre-NAT software-routing layer**. The master specification describes the intended v3.0 direction.
+The recommended next step is to retain the existing UI/control plane while replacing the filtering/routing backend with a **real pre-NAT/user-aware software-routing and WFP layer**. That redesign should support both hotspot clients and Protected Windows Users with the same policy model.
 
 ## Security
 
