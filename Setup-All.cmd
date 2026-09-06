@@ -9,7 +9,7 @@ if not "%errorlevel%"=="0" (
 )
 
 echo ============================================================
-echo Hadi WiFi Router v1.8 - Complete one-time setup
+echo Hadi WiFi Router v2.4 - Complete one-time setup
 echo ============================================================
 echo.
 powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File "%~dp0Setup-All.ps1"
