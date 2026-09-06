@@ -8,6 +8,7 @@ $LogPath = Join-Path $Root 'logs\service.log'
 . (Join-Path $AppDir 'HotspotCore.ps1')
 . (Join-Path $AppDir 'WebsiteRules.ps1')
 . (Join-Path $AppDir 'SpeedRules.ps1')
+. (Join-Path $AppDir 'ProtectedUsers.ps1')
 
 function Log([string]$Text) {
     $line = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')  $Text"
@@ -22,7 +23,6 @@ function Get-DaySchedule($c, [string]$dayName) {
     if ($null -ne $c.DaySchedules -and $null -ne $c.DaySchedules.$dayName) {
         return $c.DaySchedules.$dayName
     }
-    # Backward compatibility with v0.4 settings.
     return [pscustomobject]@{
         Enabled = (@($c.Days) -contains $dayName)
         Start = [string]$c.StartTime
@@ -31,9 +31,9 @@ function Get-DaySchedule($c, [string]$dayName) {
 }
 
 function Test-Window([TimeSpan]$now, [TimeSpan]$start, [TimeSpan]$stop) {
-    if ($start -eq $stop) { return $true } # 24 hours
+    if ($start -eq $stop) { return $true }
     if ($start -lt $stop) { return ($now -ge $start -and $now -lt $stop) }
-    return ($now -ge $start) # overnight portion before midnight is handled today
+    return ($now -ge $start)
 }
 
 function Is-InSchedule($c) {
@@ -41,7 +41,7 @@ function Is-InSchedule($c) {
     if (-not $c.ScheduleEnabled) { return $true }
     if($null -ne $c.PSObject.Properties['ScheduleRules']){
         $whole=@($c.ScheduleRules|Where-Object{[bool]$_.Enabled -and [string]$_.Target -eq 'Whole traffic'})
-        if($whole.Count -eq 0){return $true} # schedules exist only for services; keep Wi-Fi on
+        if($whole.Count -eq 0){return $true}
         $now=Get-Date
         foreach($r in $whole){ if(Test-SchedulePeriod $now ([string]$r.Day) ([string]$r.Start) ([string]$r.Stop)){return $true} }
         return $false
@@ -56,6 +56,7 @@ $lastDesired = $null
 $lastConfigSignature = $null
 $filterRefresh = [datetime]::MinValue
 $speedRefresh = [datetime]::MinValue
+$protectedRefresh = [datetime]::MinValue
 Log "Background engine started as $([Security.Principal.WindowsIdentity]::GetCurrent().Name)."
 
 while ($true) {
@@ -100,6 +101,11 @@ while ($true) {
         if ((Get-Date) -gt $speedRefresh.AddMinutes(2)) {
             try { Log (Apply-SpeedRules $c) } catch { Log "Speed-control error: $($_.Exception.Message)" }
             $speedRefresh = Get-Date
+        }
+
+        if ((Get-Date) -gt $protectedRefresh.AddSeconds(20)) {
+            try { Log ('Protected-user rules: ' + (Apply-ProtectedUserRules $c)) } catch { Log "Protected-user error: $($_.Exception.Message)" }
+            $protectedRefresh = Get-Date
         }
     } catch {
         Log "Engine loop error: $($_.Exception.Message)"
